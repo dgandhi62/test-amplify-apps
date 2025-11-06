@@ -7,3 +7,37 @@ type Todo @model {
   name: String!
   description: String
 }
+
+type User @model {
+  id: ID!
+  name: String!
+  email: String!
+  age: Int
+}
+
+type Post @model {
+  id: ID!
+  title: String!
+  content: String
+  authorID: ID!
+}
+
+type Comment @model {
+  id: ID!
+  content: String!
+  postID: ID!
+  authorID: ID!
+}
+
+type Profile @model {
+  id: ID!
+  bio: String
+  avatar: String
+  userID: ID!
+}
+
+type Category @model {
+  id: ID!
+  name: String!
+  description: String
+}

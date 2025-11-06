@@ -16,7 +16,16 @@
         "dgtestapp1539844b6": {}
       },
       "function": {
-        "dgtestapp18fcd6ffd": {}
+        "dgtestapp18fcd6ffd": {
+          "deploymentBucketName": "amplify-dgtestapp1-dev-17bc3-deployment",
+          "s3Key": "amplify-builds/dgtestapp18fcd6ffd-4b45717450694a797677-build.zip"
+        }
+      },
+      "api": {
+        "dgtestapp1": {}
+      },
+      "storage": {
+        "s3dgtestapp1": {}
       }
     }
   }

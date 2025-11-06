@@ -1,5 +1,6 @@
 {
   "AppSyncApiName": "dgtestapp1",
   "DynamoDBBillingMode": "PAY_PER_REQUEST",
-  "DynamoDBEnableServerSideEncryption": false
+  "DynamoDBEnableServerSideEncryption": false,
+  "AuthModeLastUpdated": "2025-11-06T15:03:35.091Z"
 }

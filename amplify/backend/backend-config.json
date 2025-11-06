@@ -7,7 +7,9 @@
           "additionalAuthenticationProviders": [],
           "defaultAuthentication": {
             "apiKeyConfig": {
-              "apiKeyExpirationDays": 7
+              "apiKeyExpirationDate": "2025-11-13T15:03:33.193Z",
+              "apiKeyExpirationDays": 7,
+              "description": ""
             },
             "authenticationType": "API_KEY"
           }
@@ -50,6 +52,24 @@
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
+    }
+  },
+  "parameters": {
+    "AMPLIFY_function_dgtestapp18fcd6ffd_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "dgtestapp18fcd6ffd"
+        }
+      ]
+    },
+    "AMPLIFY_function_dgtestapp18fcd6ffd_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "dgtestapp18fcd6ffd"
+        }
+      ]
     }
   },
   "storage": {
