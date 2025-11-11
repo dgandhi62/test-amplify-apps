@@ -18,5 +18,11 @@ export type AmplifyDependentResourcesAttributes = {
       "UserPoolId": "string",
       "UserPoolName": "string"
     }
+  },
+  "storage": {
+    "dgtestappS3": {
+      "BucketName": "string",
+      "Region": "string"
+    }
   }
 }

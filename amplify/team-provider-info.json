@@ -17,6 +17,9 @@
       },
       "api": {
         "dgtestapp1": {}
+      },
+      "storage": {
+        "dgtestappS3": {}
       }
     }
   }
