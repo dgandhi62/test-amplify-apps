@@ -14,7 +14,6 @@ type User1 @model {
   email: String!
   firstName: String
   lastName: String
-  posts: [Post1] @hasMany(indexName: "byUser", fields: ["id"])
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
 }
@@ -25,8 +24,6 @@ type Post1 @model {
   content: String!
   published: Boolean!
   userID: ID! @index(name: "byUser")
-  user: User1 @belongsTo(fields: ["userID"])
-  comments: [Comment1] @hasMany(indexName: "byPost", fields: ["id"])
   tags: [String]
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
@@ -36,7 +33,6 @@ type Comment1 @model {
   id: ID!
   content: String!
   postID: ID! @index(name: "byPost")
-  post: Post1 @belongsTo(fields: ["postID"])
   author: String!
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
@@ -50,7 +46,6 @@ type Product1 @model {
   category: String! @index(name: "byCategory")
   inStock: Boolean!
   sku: String! @index(name: "bySku")
-  orders: [OrderItem1] @hasMany(indexName: "byProduct", fields: ["id"])
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
 }
@@ -60,7 +55,6 @@ type Order1 @model {
   customerEmail: String!
   status: OrderStatus!
   total: Float!
-  items: [OrderItem1] @hasMany(indexName: "byOrder", fields: ["id"])
   shippingAddress: String
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
@@ -69,9 +63,7 @@ type Order1 @model {
 type OrderItem1 @model {
   id: ID!
   orderID: ID! @index(name: "byOrder")
-  order: Order1 @belongsTo(fields: ["orderID"])
   productID: ID! @index(name: "byProduct")
-  product: Product1 @belongsTo(fields: ["productID"])
   quantity: Int!
   price: Float!
 }
