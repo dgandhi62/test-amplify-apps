@@ -12,9 +12,9 @@ export const auth = defineAuth({
                 clientSecret: secret("GOOGLE_CLIENT_SECRET"),
                 attributeMapping: {
                     email: "email"
-                }
+                },
+                scopes: ["aws.cognito.signin.user.admin", "email", "openid", "phone", "profile"]
             },
-            scopes: ["aws.cognito.signin.user.admin", "email", "openid", "phone", "profile"],
             callbackUrls: ["https://localhost:5173/"],
             logoutUrls: ["https://localhost:5173/"]
         }
