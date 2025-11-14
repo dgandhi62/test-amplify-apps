@@ -74,13 +74,18 @@ Object.keys(providerSetupResult).forEach(provider => {
     }
 });
 
-const { amplifyDynamoDbTables } = backend.data.resources.cfnResources;
-console.log('Available tables:', Object.keys(amplifyDynamoDbTables));
-for (const [tableName, table] of Object.entries(amplifyDynamoDbTables)) {
-  console.log(`Before - ${tableName}:`, table.deletionProtectionEnabled);
-  table.deletionProtectionEnabled = false;
-  console.log(`After - ${tableName}:`, table.deletionProtectionEnabled);
-}
+// Access migrated tables through the data stack
+const dataStack = backend.data.stack;
+const tables = dataStack.node.findAll().filter(node => node.node.id.includes('Table'));
+console.log('Available tables:', tables.length);
+tables.forEach(table => {
+  if (table.node.defaultChild) {
+    const cfnTable = table.node.defaultChild as any;
+    if (cfnTable.deletionProtectionEnabled !== undefined) {
+      cfnTable.deletionProtectionEnabled = false;
+    }
+  }
+});
 
 // backend.auth.resources.userPool.node.tryRemoveChild("UserPoolDomain");
 // Tags.of(backend.stack).add("gen1-migrated-app", "true");
