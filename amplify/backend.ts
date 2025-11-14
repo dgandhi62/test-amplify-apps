@@ -73,19 +73,14 @@ Object.keys(providerSetupResult).forEach(provider => {
         userPoolClient.node.addDependency(providerSetupPropertyValue);
     }
 });
-
-// Disable deletion protection only for migrated Gen1 tables
-const migratedTableNames = Object.keys((data as any).migratedAmplifyGen1DynamoDbTableMappings[0].modelNameToTableNameMapping);
-const dataStack = backend.data.stack;
-migratedTableNames.forEach(modelName => {
-  const table = dataStack.node.tryFindChild(`${modelName}Table`);
-  if (table?.node.defaultChild) {
-    const cfnTable = table.node.defaultChild as any;
-    if (cfnTable.deletionProtectionEnabled !== undefined) {
-      cfnTable.deletionProtectionEnabled = false;
-    }
-  }
-});
+const { amplifyDynamoDbTables } = backend.data.resources.cfnResources;
+console.log('Available tables:', Object.keys(backend.data));
+console.log('Available tables:', Object.keys(backend.data.resources));
+for (const [tableName, table] of Object.entries(amplifyDynamoDbTables)) {
+  console.log(`Before - ${tableName}:`, table.deletionProtectionEnabled);
+  table.deletionProtectionEnabled = false;
+  console.log(`After - ${tableName}:`, table.deletionProtectionEnabled);
+}
 
 // backend.auth.resources.userPool.node.tryRemoveChild("UserPoolDomain");
 // Tags.of(backend.stack).add("gen1-migrated-app", "true");
