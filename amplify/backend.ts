@@ -70,11 +70,25 @@ Object.keys(providerSetupResult).forEach(provider => {
         userPoolClient.node.addDependency(providerSetupPropertyValue);
     }
 });
-for (const table of Object.values(backend.data.resources.tables)) {
+for (const [tableName, table] of Object.entries(backend.data.resources.tables)) {
+  console.log(`Table ${tableName}:`);
+  console.log('- defaultChild:', table.node.defaultChild?.constructor.name);
+  console.log('- children:', table.node.children.map(c => c.constructor.name));
+  
+  // Try different approaches
   const cfnTable = table.node.defaultChild as any;
-  if (cfnTable) {
-    console.log(cfnTable)
+  if (cfnTable && cfnTable.deletionProtectionEnabled !== undefined) {
     cfnTable.deletionProtectionEnabled = false;
+    console.log(`Set deletionProtectionEnabled=false for ${tableName}`);
+  } else {
+    // Try finding CfnTable in children
+    const cfnTableChild = table.node.children.find(child => 
+      child.constructor.name === 'CfnTable'
+    ) as any;
+    if (cfnTableChild) {
+      cfnTableChild.deletionProtectionEnabled = false;
+      console.log(`Set deletionProtectionEnabled=false for ${tableName} via children`);
+    }
   }
 }
 
