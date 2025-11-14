@@ -75,8 +75,11 @@ Object.keys(providerSetupResult).forEach(provider => {
 });
 
 const { amplifyDynamoDbTables } = backend.data.resources.cfnResources;
-for (const table of Object.values(amplifyDynamoDbTables)) {
+console.log('Available tables:', Object.keys(amplifyDynamoDbTables));
+for (const [tableName, table] of Object.entries(amplifyDynamoDbTables)) {
+  console.log(`Before - ${tableName}:`, table.deletionProtectionEnabled);
   table.deletionProtectionEnabled = false;
+  console.log(`After - ${tableName}:`, table.deletionProtectionEnabled);
 }
 
 // backend.auth.resources.userPool.node.tryRemoveChild("UserPoolDomain");
