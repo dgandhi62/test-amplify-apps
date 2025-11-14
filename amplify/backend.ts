@@ -1,12 +1,9 @@
-import { RemovalPolicy, Tags } from "aws-cdk-lib";
 import { auth } from "./auth/resource";
 import { data } from "./data/resource";
 import { storage } from "./storage/resource";
 import { defineBackend } from "@aws-amplify/backend";
-import ci from "ci-info";
 import { Duration } from "aws-cdk-lib";
 import { OAuthScope, UserPoolClientIdentityProvider } from "aws-cdk-lib/aws-cognito";
-import * as s3 from "aws-cdk-lib/aws-s3";
 
 
 const backend = defineBackend({
@@ -77,15 +74,12 @@ const { amplifyDynamoDbTables } = backend.data.resources.tables;
 console.log('Available tables:', Object.keys(backend.data));
 console.log('Available resources:', Object.keys(backend.data.resources));
 console.log('Available cfn resources:', Object.keys(backend.data.resources.cfnResources));
-console.log('Available tables:', Object.keys(backend.data.resources.tables));
+console.log('Available amplify tables:', Object.keys(backend.data.resources.cfnResources.amplifyDynamoDbTables));
+console.log('Available resource tables:', Object.keys(backend.data.resources.tables));
 
 
 
 console.log('Available data nodes:', Object.keys(backend.data.node));
 console.log('Available data stacks:', Object.keys(backend.data.stack));
-for (const table of Object.values(amplifyDynamoDbTables)) {
-  table.deletionProtectionEnabled = false;
-}
 
-// backend.auth.resources.userPool.node.tryRemoveChild("UserPoolDomain");
-// Tags.of(backend.stack).add("gen1-migrated-app", "true");
+
