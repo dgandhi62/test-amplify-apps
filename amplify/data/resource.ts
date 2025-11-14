@@ -1,4 +1,6 @@
-# This "input" configures a global authorization rule to enable public access to
+import { defineData } from "@aws-amplify/backend";
+
+const schema = `# This "input" configures a global authorization rule to enable public access to
 # all models in this schema. Learn more about authorization rules here: https://docs.amplify.aws/cli/graphql/authorization-rules
 input AMPLIFY { globalAuthRule: AuthRule = { allow: public } } # FOR TESTING ONLY!
 
@@ -75,3 +77,13 @@ enum OrderStatus {
   DELIVERED
   CANCELLED
 }
+`;
+
+export const data = defineData({
+    migratedAmplifyGen1DynamoDbTableMappings: [{
+            //The "branchname" variable needs to be the same as your deployment branch if you want to reuse your Gen1 app tables
+            branchName: "migratec",
+            modelNameToTableNameMapping: { Todo1: "Todo1-2cmakhyatjc4tnw34mozzdc6yy-migratec", User1: "User1-2cmakhyatjc4tnw34mozzdc6yy-migratec", Post1: "Post1-2cmakhyatjc4tnw34mozzdc6yy-migratec", Comment1: "Comment1-2cmakhyatjc4tnw34mozzdc6yy-migratec", Product1: "Product1-2cmakhyatjc4tnw34mozzdc6yy-migratec", Order1: "Order1-2cmakhyatjc4tnw34mozzdc6yy-migratec", OrderItem1: "OrderItem1-2cmakhyatjc4tnw34mozzdc6yy-migratec" }
+        }],
+    schema
+});
