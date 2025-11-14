@@ -70,16 +70,12 @@ Object.keys(providerSetupResult).forEach(provider => {
         userPoolClient.node.addDependency(providerSetupPropertyValue);
     }
 });
-const { amplifyDynamoDbTables } = backend.data.resources.tables;
-console.log('Available tables:', Object.keys(backend.data));
-console.log('Available resources:', Object.keys(backend.data.resources));
-console.log('Available cfn resources:', Object.keys(backend.data.resources.cfnResources));
-console.log('Available amplify tables:', Object.keys(backend.data.resources.cfnResources.amplifyDynamoDbTables));
-console.log('Available resource tables:', Object.keys(backend.data.resources.tables));
-
-
-
-console.log('Available data nodes:', Object.keys(backend.data.node));
-console.log('Available data stacks:', Object.keys(backend.data.stack));
+for (const table of Object.values(backend.data.resources.tables)) {
+  const cfnTable = table.node.defaultChild as any;
+  if (cfnTable) {
+    console.log(cfnTable)
+    cfnTable.deletionProtectionEnabled = false;
+  }
+}
 
 
