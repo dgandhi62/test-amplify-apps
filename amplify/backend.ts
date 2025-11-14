@@ -76,6 +76,13 @@ Object.keys(providerSetupResult).forEach(provider => {
 const { amplifyDynamoDbTables } = backend.data.resources.cfnResources;
 console.log('Available tables:', Object.keys(backend.data));
 console.log('Available tables:', Object.keys(backend.data.resources));
+console.log('Available tables:', Object.keys(backend.data.resources.cfnResources));
+console.log('Available tables:', Object.keys(backend.data.resources.tables));
+
+
+
+console.log('Available tables:', Object.keys(backend.data.node));
+console.log('Available tables:', Object.keys(backend.data.stack));
 for (const [tableName, table] of Object.entries(amplifyDynamoDbTables)) {
   console.log(`Before - ${tableName}:`, table.deletionProtectionEnabled);
   table.deletionProtectionEnabled = false;
