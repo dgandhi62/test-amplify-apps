@@ -74,12 +74,12 @@ Object.keys(providerSetupResult).forEach(provider => {
     }
 });
 
-// Access migrated tables through the data stack
+// Disable deletion protection only for migrated Gen1 tables
+const migratedTableNames = Object.keys((data as any).migratedAmplifyGen1DynamoDbTableMappings[0].modelNameToTableNameMapping);
 const dataStack = backend.data.stack;
-const tables = dataStack.node.findAll().filter(node => node.node.id.includes('Table'));
-console.log('Available tables:', tables.length);
-tables.forEach(table => {
-  if (table.node.defaultChild) {
+migratedTableNames.forEach(modelName => {
+  const table = dataStack.node.tryFindChild(`${modelName}Table`);
+  if (table?.node.defaultChild) {
     const cfnTable = table.node.defaultChild as any;
     if (cfnTable.deletionProtectionEnabled !== undefined) {
       cfnTable.deletionProtectionEnabled = false;
