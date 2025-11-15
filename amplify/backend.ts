@@ -70,26 +70,46 @@ Object.keys(providerSetupResult).forEach(provider => {
         userPoolClient.node.addDependency(providerSetupPropertyValue);
     }
 });
-for (const [tableName, table] of Object.entries(backend.data.resources.tables)) {
-  console.log(`Table ${tableName}:`);
-  console.log('- defaultChild:', table.node.defaultChild?.constructor.name);
-  console.log('- children:', table.node.children.map(c => c.constructor.name));
-  
-  // Try different approaches
-  const cfnTable = table.node.defaultChild as any;
-  if (cfnTable && cfnTable.deletionProtectionEnabled !== undefined) {
+// Access CFN tables directly from cfnResources
+console.log('backend: ', backend)
+console.log('backend.data: ', backend.data)
+console.log('backend.data.resources: ', backend.data.resources)
+console.log('backend.data.resources.cfnResources: ', backend.data.resources.cfnResources)
+console.log('backend.data.resources.cfnResources.amplifyDynamoDbTables', backend.data.resources.cfnResources.amplifyDynamoDbTables)
+
+
+// Try accessing through the data stack directly
+console.log('backend.data.stack.node.children:', backend.data.stack.node.children);
+
+// Access the GraphQL API
+const graphqlApi = backend.data.resources.cfnResources.cfnGraphqlApi;
+console.log('GraphQL API:', graphqlApi);
+
+console.log('backend.data.resources.tables:', backend.data.resources.tables);
+
+// Check nested stacks for tables
+console.log('backend.data.resources.nestedStacks:', backend.data.resources.nestedStacks);
+
+// Check all cfnResources keys
+console.log('backend.data.resources.cfnResources.additionalCfnResources', Object.keys(backend.data.resources.cfnResources.additionalCfnResources));
+
+console.log('backend.data.resources.cfnResources.cfnTables', Object.keys(backend.data.resources.cfnResources.cfnTables));
+
+// Look for tables in the data stack children
+backend.data.stack.node.children.forEach(child => {
+  console.log('Stack child:', child.node.id, child.constructor.name);
+  if (child.node.id.includes('Table') || child.node.id.includes('DynamoDB')) {
+    console.log('Found table-related resource:', child);
+  }
+});
+
+if (backend.data.resources.cfnResources.amplifyDynamoDbTables) {
+  for (const [tableName, cfnTable] of Object.entries(backend.data.resources.cfnResources.amplifyDynamoDbTables)) {
     cfnTable.deletionProtectionEnabled = false;
     console.log(`Set deletionProtectionEnabled=false for ${tableName}`);
-  } else {
-    // Try finding CfnTable in children
-    const cfnTableChild = table.node.children.find(child => 
-      child.constructor.name === 'CfnTable'
-    ) as any;
-    if (cfnTableChild) {
-      cfnTableChild.deletionProtectionEnabled = false;
-      console.log(`Set deletionProtectionEnabled=false for ${tableName} via children`);
-    }
   }
+} else {
+  console.log('No amplifyDynamoDbTables found in cfnResources');
 }
 
 
